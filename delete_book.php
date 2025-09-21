@@ -7,6 +7,17 @@
 </head>
 <body>
 
+    <h1> Book-O-Rama Book Deletion </h1>
+
+    <form action="" method="post">
+        ISBN: <br> <input type="text" name="isbndelete">
+        <br>
+        Author: <br> <input type="text" name="authordelete">
+        <br>
+
+        <button type="submit"> Submit </button>
+    </form>
+
     <?php
 
         $host = "localhost";
@@ -20,12 +31,14 @@
             die("Error connecrtion".$conn->connect_error);
         }
         
-        $deleteisbn = $_POST['isbndelete'] ?? '';
-        $deleteauthor = $_POST['authordelete'] ?? '';
+        if($_SERVER["REQUEST_METHOD"]=='POST'){
+            $deleteisbn = $_POST['isbndelete'] ?? '';
+            $deleteauthor = $_POST['authordelete'] ?? '';
 
-        if(empty($deleteisbn) || empty($deleteauthor)){
-                echo "<script> window.alert('Empty enter isbn and author to delete a book') </script>";
-        }else{
+
+             if(empty($deleteisbn) || empty($deleteauthor)){
+                echo "<script> alert('ISBN and Author required') </script>";
+            }else{
             // VALIDATING IF AUTHOR EXISTS ON THE DB
                 $checkauthor = $conn->prepare("SELECT author FROM books 
                 WHERE author = ?");
@@ -53,19 +66,12 @@
                 
         } 
         $conn->close();
+
+        }
+
     
     ?>
     
-    <h1> Book-O-Rama Book Deletion </h1>
-
-    <form action="" method="post">
-        ISBN: <br> <input type="text" name="isbndelete">
-        <br>
-        Author: <br> <input type="text" name="authordelete">
-        <br>
-
-        <button type="submit"> Submit </button>
-    </form>
 
 </body>
 </html>
